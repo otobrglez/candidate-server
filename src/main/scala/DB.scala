@@ -2,16 +2,18 @@ import slick.jdbc.H2Profile.api._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import models.{events, users}
+import slick.jdbc.H2Profile
+import H2Profile.backend.DatabaseDef
 
-import scala.concurrent.Await
+import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.Duration
 
 object DB {
-  val db = Database.forURL("jdbc:h2:file:./data:test;DB_CLOSE_DELAY=-1")
+  val db: DatabaseDef = Database.forURL("jdbc:h2:file:./data:test;DB_CLOSE_DELAY=-1")
 
-  def prepareDb = {
+  def prepareDb: Future[Boolean] = {
     val createSchema = for {
-      _ <- users.schema.create;
+      _ <- users.schema.create
       _ <- events.schema.create
     } yield true
 

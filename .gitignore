@@ -1,3 +1,7 @@
+# Datbase
+*.db
+
+# Max stuff
 .DS_Store
 */**/.DS_Store
 

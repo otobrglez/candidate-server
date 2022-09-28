@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -e
+
 SERVER="localhost:8000"
 EVENT_URL="/event"
 USER_URL="/user"
@@ -19,8 +21,8 @@ user() {
   timestamp="${3:-$(date +%s)}"
   curl "${SERVER}${USER_URL}" \
     -H 'content-type: application/json' \
-    -d "{\"user_id\": \"${user_id}\", \"properties\": \"${properties}\", \"timestamp\": \"${timestamp}\"}" \
-    && echo # server doesn't return trailing newline
+    -d "{\"user_id\": \"${user_id}\", \"properties\": \"${properties}\", \"timestamp\": \"${timestamp}\"}" &&
+    echo # server doesn't return trailing newline
 }
 
 event_names=("Button Clicked" "Friend Invited" "Cart Viewed" "Checkout Entered" "Purchase Made" "User Login")
