@@ -17,21 +17,21 @@ import scala.util.Try
 
 object Main extends App with Endpoint.Module[IO] {
 
-  implicit val tsDecoder: Decoder[Timestamp] = Decoder.decodeInt.emapTry {
-    ts => Try(Timestamp.from(Instant.ofEpochSecond(ts)))
+  implicit val tsDecoder: Decoder[Timestamp] = Decoder.decodeInt.emapTry { ts =>
+    Try(Timestamp.from(Instant.ofEpochSecond(ts)))
   }
 
- val postEvent = post("event" :: jsonBody[Event]) { event: Event =>
-   val eFuture = db.run(Events.create(event))
+  val postEvent = post("event" :: jsonBody[Event]) { event: Event =>
+    val eFuture = db.run(Events.create(event))
 
-   eFuture.map(e => Ok(s"added new event with id ${e.id.get}"))
- }
+    eFuture.map(e => Ok(s"added new event with id ${e.id.get}"))
+  }
 
- val postUser = post("user" :: jsonBody[User]) { user: User =>
-   val uFuture = db.run(Users.create(user))
+  val postUser = post("user" :: jsonBody[User]) { user: User =>
+    val uFuture = db.run(Users.create(user))
 
-   uFuture.map(u => Ok(s"added new event with id ${u.id.get}"))
- }
+    uFuture.map(u => Ok(s"added new event with id ${u.id.get}"))
+  }
 
   prepareDb
 
